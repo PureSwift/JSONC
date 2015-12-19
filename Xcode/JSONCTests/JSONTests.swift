@@ -11,18 +11,6 @@ import SwiftFoundation
 
 class JSONTests: XCTestCase {
     
-    // MARK: - Tests Setup
-
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-    
     // MARK: - Functional Tests
     
     func testJSONEncodable() {
@@ -42,11 +30,21 @@ class JSONTests: XCTestCase {
 
     func testJSONParse() {
         
-        func parseJSON(json: AnyObject) {
+        func parseJSON(json: Any, _ jsonString: String) {
             
-            let data = try! NSJSONSerialization.dataWithJSONObject(json, options: NSJSONWritingOptions.PrettyPrinted)
+            #if os(OSX)
+                
+                // validate JSON string on Darwin
+                do {
+                    
+                    let json = NSJSONSerialization.JSONObjectWithData(<#T##data: NSData##NSData#>, options: <#T##NSJSONReadingOptions#>)
+                    
+                    let jsonString = NSString(data: data, encoding: NSUTF8StringEncoding) as! String
+                }
+                
+                #endif
             
-            let jsonString = NSString(data: data, encoding: NSUTF8StringEncoding) as! String
+            
             
             guard let jsonValue = JSON.Value(string: jsonString)
                 else { XCTFail("JSON parsing failed"); return }
@@ -54,7 +52,7 @@ class JSONTests: XCTestCase {
             print("Parsed JSON: \(jsonValue)\n")
         }
         
-        parseJSON(["Key": NSNull()])
+        parseJSON(["Key": NSNull()], "{ \"Key\" : null }")
         
         parseJSON(["Key": "Value"])
         
@@ -199,11 +197,13 @@ class JSONTests: XCTestCase {
         
         let jsonString = performanceJSONString
         
-        let jsonData = NSData(bytes: jsonString.toUTF8Data())
+        let jsonData = jsonString.toUTF8Data().toFoundation()
         
         measureBlock {
             
-            let _ = try! NSJSONSerialization.JSONObjectWithData(jsonData, options: NSJSONReadingOptions())
+            let json = try! NSJSONSerialization.JSONObjectWithData(jsonData, options: NSJSONReadingOptions())
+            
+            
         }
     }
 }

@@ -6,8 +6,13 @@
 //  Copyright © 2015 PureSwift. All rights reserved.
 //
 
+#if os(OSX) || os(iOS) || os(watchOS) || os(tvOS)
+    import JSON
+#elseif os(Linux)
+    import CJSONC
+#endif
+
 import SwiftFoundation
-import CJSONC
 
 public extension JSON {
     
@@ -19,7 +24,7 @@ public extension JSON {
         /// Causes the output to have minimal whitespace inserted to make things slightly more readable.
         case Spaced
         
-        /// Causes the output to be formatted. See the "Two Space Tab" option at http://jsonformatter.curiousconcept.com/
+        /// Causes the output to be formatted. See the [Two Space Tab](http://jsonformatter.curiousconcept.com/) option
         /// for an example of the format.
         case Pretty
         
@@ -62,7 +67,7 @@ public extension JSON.Value {
     /// - Precondition: JSON value must be an array or object.
     ///
     /// - Note: Uses the [JSON-C](https://github.com/json-c/json-c) library. 
-    func toString(options: [JSON.Serialization.WritingOption] = []) -> Swift.String? {
+    func toString(options: [JSON.WritingOption] = []) -> Swift.String? {
         
         switch self {
             

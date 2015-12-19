@@ -6,8 +6,13 @@
 //  Copyright © 2015 PureSwift. All rights reserved.
 //
 
+#if os(OSX) || os(iOS) || os(watchOS) || os(tvOS)
+    import JSON
+#elseif os(Linux)
+    import CJSONC
+#endif
+
 import SwiftFoundation
-import CJSONC
 
 public extension JSON.Value {
     
@@ -29,6 +34,11 @@ public extension JSON.Value {
         
         self.init(jsonObject: jsonObject)
     }
+}
+
+public extension JSONC {
+    
+    
 }
 
 private extension JSON.Value {
