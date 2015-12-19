@@ -11,7 +11,9 @@ import CJSONC
 
 public extension JSON.Value {
     
-    /// creates JSON from string
+    /// Deserializes JSON from a string.
+    ///
+    /// - Note: Uses the [JSON-C](https://github.com/json-c/json-c) library.
     init?(string: Swift.String) {
         
         let tokenerError = UnsafeMutablePointer<json_tokener_error>.alloc(1)
