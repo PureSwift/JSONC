@@ -1,6 +1,6 @@
 //
 //  JSONSerialization.swift
-//  SwiftFoundation
+//  JSONC
 //
 //  Created by Alsey Coleman Miller on 8/22/15.
 //  Copyright © 2015 PureSwift. All rights reserved.
@@ -14,52 +14,6 @@
 
 import SwiftFoundation
 
-public extension JSON {
-    
-    /// Options for serializing JSON.
-    ///
-    /// - Note: Uses the [JSON-C](https://github.com/json-c/json-c) library.
-    public enum WritingOption: BitMaskOption {
-        
-        /// Causes the output to have minimal whitespace inserted to make things slightly more readable.
-        case Spaced
-        
-        /// Causes the output to be formatted. See the [Two Space Tab](http://jsonformatter.curiousconcept.com/) option
-        /// for an example of the format.
-        case Pretty
-        
-        /// Causes the output to be formatted. Instead of a "Two Space Tab" this gives a single tab character.
-        case PrettyTab
-        
-        /// Drop trailing zero for float values
-        case NoZero
-        
-        public init?(rawValue: Int32) {
-            
-            switch rawValue {
-                
-            case JSON_C_TO_STRING_SPACED:       self = .Spaced
-            case JSON_C_TO_STRING_PRETTY:       self = .Pretty
-            case JSON_C_TO_STRING_PRETTY_TAB:   self = .PrettyTab
-            case JSON_C_TO_STRING_NOZERO:       self = .NoZero
-                
-            default: return nil
-            }
-        }
-        
-        public var rawValue: Int32 {
-            
-            switch self {
-                
-            case Spaced:        return JSON_C_TO_STRING_SPACED
-            case Pretty:        return JSON_C_TO_STRING_PRETTY
-            case PrettyTab:     return JSON_C_TO_STRING_PRETTY_TAB
-            case NoZero:        return JSON_C_TO_STRING_NOZERO
-            }
-        }
-    }
-}
-
 public extension JSON.Value {
     
     /// Serializes the JSON to a string.
@@ -67,7 +21,7 @@ public extension JSON.Value {
     /// - Precondition: JSON value must be an array or object.
     ///
     /// - Note: Uses the [JSON-C](https://github.com/json-c/json-c) library. 
-    func toString(options: [JSON.WritingOption] = []) -> Swift.String? {
+    func toString(options: [JSONC.WritingOption] = []) -> Swift.String? {
         
         switch self {
             
@@ -76,7 +30,30 @@ public extension JSON.Value {
         default: return nil
         }
         
-        let jsonObject = self.toJSONObject()
+        return JSONC.toString(self, options: options)
+    }
+}
+
+public extension JSONC {
+    
+    public static func serialize(object: JSON.Object, options: [WritingOption] = []) -> String {
+        
+        return toString(.Object(object))
+    }
+    
+    public static func serialize(array: JSON.Array, options: [WritingOption] = []) -> String {
+        
+        return toString(.Array(array))
+    }
+}
+
+// MARK: - Private
+
+private extension JSONC {
+    
+    static func toString(JSONValue: JSON.Value, options: [WritingOption] = []) -> String {
+        
+        let jsonObject = JSONValue.toJSONObject()
         
         defer { json_object_put(jsonObject) }
         

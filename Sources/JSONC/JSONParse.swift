@@ -1,6 +1,6 @@
 //
 //  JSONParse.swift
-//  SwiftFoundation
+//  JSONC
 //
 //  Created by Alsey Coleman Miller on 8/10/15.
 //  Copyright © 2015 PureSwift. All rights reserved.
@@ -14,12 +14,9 @@
 
 import SwiftFoundation
 
-public extension JSON.Value {
+public extension JSONC {
     
-    /// Deserializes JSON from a string.
-    ///
-    /// - Note: Uses the [JSON-C](https://github.com/json-c/json-c) library.
-    init?(string: Swift.String) {
+    public static func parse(string: String) -> JSON.Value? {
         
         let tokenerError = UnsafeMutablePointer<json_tokener_error>.alloc(1)
         
@@ -32,13 +29,8 @@ public extension JSON.Value {
         // could not parse
         guard tokenerError != nil else { return nil }
         
-        self.init(jsonObject: jsonObject)
+        return JSON.Value(jsonObject: jsonObject)
     }
-}
-
-public extension JSONC {
-    
-    
 }
 
 private extension JSON.Value {

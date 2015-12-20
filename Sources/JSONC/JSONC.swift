@@ -6,9 +6,7 @@
 //  Copyright © 2015 PureSwift. All rights reserved.
 //
 
-/// Swift library for [JSON-C](JSON-C]) library.
-public struct JSONC {
-    
-    public struct Serialization {  }
+import SwiftFoundation
 
-}
+/// JSON Serialization backed by [JSON-C](JSON-C]) library.
+public struct JSONC: JSONSerializationType { }
