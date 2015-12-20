@@ -11,6 +11,13 @@ import SwiftFoundation
 import JSONC
 
 class JSONTests: XCTestCase {
+    
+    lazy var allTests: [(String, () -> ())] = [
+        
+        ("testJSONEncodable", self.testJSONEncodable),
+        ("testJSONParse", self.testJSONParse),
+        ("testJSONWriting", self.testJSONWriting)
+    ]
         
     func testJSONEncodable() {
         
@@ -29,7 +36,7 @@ class JSONTests: XCTestCase {
 
     func testJSONParse() {
         
-        func parseJSON(json: Any, _ jsonString: String) {
+        func parseJSON(jsonValue: JSON.Value, _ jsonString: String) {
             
             #if os(OSX) || os(iOS)
                 
@@ -42,25 +49,35 @@ class JSONTests: XCTestCase {
                 
             #endif
             
-            guard let jsonValue = JSON.Value(string: jsonString, JSONC.self)
+            guard let parsedJSONValue = JSON.Value(string: jsonString, JSONC.self)
                 else { XCTFail("JSON parsing failed"); return }
             
             print("Parsed JSON: \(jsonValue)\n")
+            
+            XCTAssert(jsonValue == parsedJSONValue, "\(jsonValue) == \(parsedJSONValue)")
         }
         
-        parseJSON(["Key": NSNull()], "{ \"Key\" : null }")
+        parseJSON(.Object(["Key": .Null]), "{ \"Key\" : null }")
         
-        parseJSON(["Key": "Value"], "{ \"Key\" : \"Value\" }")
+        parseJSON(.Object(["Key": .String("Value")]), "{ \"Key\" : \"Value\" }")
         
-        parseJSON(["Key": true], "{ \"Key\" : true }")
+        parseJSON(.Object(["Key": .Number(.Boolean(true))]), "{ \"Key\" : true }")
         
-        parseJSON(["Key": 10], "{ \"Key\" : 10 }")
+        parseJSON(.Object(["Key": .Number(.Integer(10))]), "{ \"Key\" : 10 }")
         
-        parseJSON(["Key": 1.01], "{ \"Key\" : 1.01 }")
+        parseJSON(.Object(["Key": .Number(.Double(1.01))]), "{ \"Key\" : 1.01 }")
         
-        parseJSON(["Key": ["Key2": "Value"]], "{ \"Key\" : { \"Key2\" : \"Value\" } }")
+        parseJSON(.Object(["Key": .Object(["Key2": .String("Value")])]), "{ \"Key\" : { \"Key2\" : \"Value\" } }")
         
-        parseJSON([true, false, 10, 10.10, "string", ["subarrayValue1", "subarrayValue2"], ["subobjectKey", "subobjectValue"]], "[ true, false, 10, 10.10, \"string\", [\"subarrayValue1\", \"subarrayValue2\"], {\"subobjectKey\" : \"subobjectValue\"} ]")
+        parseJSON(.Array([
+            .Number(.Boolean(true)),
+            .Number(.Boolean(false)),
+            .Number(.Integer(10)),
+            .Number(.Double(10.1)),
+            .String("string"),
+            .Array([.String("subarrayValue1"), .String("subarrayValue2")]),
+                .Object(["subobjectKey": .String("subobjectValue")])
+                ]), "[true, false, 10, 10.1, \"string\", [\"subarrayValue1\", \"subarrayValue2\"], {\"subobjectKey\" : \"subobjectValue\"} ]")
     }
     
     func testJSONWriting() {
