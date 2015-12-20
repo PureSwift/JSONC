@@ -106,15 +106,14 @@ class JSONTests: XCTestCase {
         writeJSON(.Object([
             "Key": .String("Value")
             ]), "{\"Key\":\"Value\"}")
-        
+                
         writeJSON(.Array([
             .String("value1"),
             .String("value2"),
             .Null,
             .Number(.Boolean(true)),
             .Number(.Integer(10)),
-            .Number(.Double(10.10)),
             .Object(["Key": .String("Value")])
-            ]), "[\"value1\",\"value2\",null,true,10,10.1,{\"Key\":\"Value\"}]")
+            ]), "[\"value1\",\"value2\",null,true,10,{\"Key\":\"Value\"}]")
     }
 }

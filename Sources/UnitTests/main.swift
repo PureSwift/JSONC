@@ -8,4 +8,10 @@
 
 import XCTest
 
+#if os(OSX) || os(iOS)
+    func XCTMain(cases: [XCTestCase]) { fatalError("Not Implemented. Linux only") }
+#endif
 
+#if os(Linux)
+    XCTMain([JSONTests()])
+#endif
