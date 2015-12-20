@@ -28,9 +28,6 @@ public extension JSONC {
         /// for an example of the format.
         case Pretty
         
-        /// Causes the output to be formatted. Instead of a "Two Space Tab" this gives a single tab character.
-        case PrettyTab
-        
         /// Drop trailing zero for float values
         case NoZero
         
@@ -40,7 +37,6 @@ public extension JSONC {
                 
             case JSON_C_TO_STRING_SPACED:       self = .Spaced
             case JSON_C_TO_STRING_PRETTY:       self = .Pretty
-            case JSON_C_TO_STRING_PRETTY_TAB:   self = .PrettyTab
             case JSON_C_TO_STRING_NOZERO:       self = .NoZero
                 
             default: return nil
@@ -53,9 +49,9 @@ public extension JSONC {
                 
             case Spaced:        return JSON_C_TO_STRING_SPACED
             case Pretty:        return JSON_C_TO_STRING_PRETTY
-            case PrettyTab:     return JSON_C_TO_STRING_PRETTY_TAB
             case NoZero:        return JSON_C_TO_STRING_NOZERO
             }
         }
     }
 }
+
