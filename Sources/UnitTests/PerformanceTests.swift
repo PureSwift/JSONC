@@ -48,11 +48,9 @@ class JSONPerformanceTests: XCTestCase {
         
         let jsonValue = performanceJSON
         
-        let foundationJSON = jsonValue.toFoundation().rawValue as! NSArray
-        
         measureBlock {
             
-            let _ = try! NSJSONSerialization.dataWithJSONObject(foundationJSON, options: NSJSONWritingOptions())
+            let _ = jsonValue.toData()
         }
         
     }

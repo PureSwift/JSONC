@@ -81,7 +81,7 @@ class JSONTests: XCTestCase {
                 XCTAssert(jsonString == foundationJSONOutputString, "Expected JSON string must match Foundation output. \(expectedJSONString) == \(foundationJSONOutputString)")
             #endif
             
-            XCTAssert(jsonString == expectedJSONString, "Doesnt match expected output. \(jsonString) == \(expectedJSONString)")
+            XCTAssert(jsonString == expectedJSONString, "Does not match expected output. \(jsonString) == \(expectedJSONString)")
             
             print("JSON Output: \(jsonString)")
         }

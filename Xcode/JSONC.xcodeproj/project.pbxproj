@@ -64,6 +64,7 @@
 		6EE709381C26287200573EE4 /* JSONTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONTests.swift; sourceTree = "<group>"; };
 		6EE7093B1C262A5A00573EE4 /* PerformanceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PerformanceTests.swift; sourceTree = "<group>"; };
 		6EE7093E1C262C6200573EE4 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		6EE709411C26341400573EE4 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Package.swift; path = ../Package.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +91,7 @@
 		6EE708F01C25E39500573EE4 = {
 			isa = PBXGroup;
 			children = (
+				6EE709411C26341400573EE4 /* Package.swift */,
 				6EE709231C25FF1600573EE4 /* Dependencies */,
 				6EE709161C25E7BF00573EE4 /* Sources */,
 				6EE708FC1C25E39500573EE4 /* JSONC */,
